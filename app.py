@@ -206,7 +206,7 @@ async def predict(
 @app.get("/health")
 async def health_check():
     return {
-        "status": "online",
+        "status": "Server online",
         "service": "Speech Processing Backend",
         "message": "The backend is running and ready to process video/audio for speech recognition and lip-reading."
     }
