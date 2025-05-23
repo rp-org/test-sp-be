@@ -20,12 +20,14 @@ jobs:
 
       - name: Deploy on VM
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
             cd /home/moshdev2213/test-sp-be
             git reset --hard HEAD
             git clean -fd
             git pull origin master
+            sudo systemctl daemon-reload
             sudo systemctl restart test-sp-app.service
+            sudo systemctl status test-sp-app.service --no-pager
+            journalctl -u test-sp-app.service -n 10 --no-pager
             echo "🚀 test-sp-app service restarted successfully!"
           EOF
-
