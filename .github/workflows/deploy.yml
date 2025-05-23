@@ -1,9 +1,25 @@
 name: Deploy to GCP VM
 
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
+    secrets:
+      SSH_PRIVATE_KEY:
+        required: true
+      VM_USER:
+        required: true
+      VM_HOST:
+        required: true
+    inputs:
+      target_directory:
+        required: true
+        type: string
+      branch:
+        required: false
+        default: master
+        type: string
+      service_name:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -18,16 +34,16 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy on VM
+      - name: Deploy to GCP VM
         run: |
-          ssh -t -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
-            cd /home/moshdev2213/test-sp-be
+          ssh -t -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << EOF
+            cd ${{ inputs.target_directory }}
             git reset --hard HEAD
             git clean -fd
-            git pull origin master
+            git pull origin ${{ inputs.branch }}
             sudo systemctl daemon-reload
-            sudo systemctl restart test-sp-app.service
-            sudo systemctl status test-sp-app.service --no-pager
-            journalctl -u test-sp-app.service -n 10 --no-pager
-            echo "🚀 test-sp-app service restarted successfully!"
+            sudo systemctl restart ${{ inputs.service_name }}
+            sudo systemctl status ${{ inputs.service_name }} --no-pager
+            journalctl -u ${{ inputs.service_name }} -n 10 --no-pager
+            echo "🚀 ${{ inputs.service_name }} restarted successfully!"
           EOF
