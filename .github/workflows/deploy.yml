@@ -21,8 +21,11 @@ jobs:
       - name: Deploy on VM
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
-            cd /home/moshdev2213/test-sp-be  # updated repo directory
-            git pull origin master           # assuming your branch is master
-            sudo systemctl restart test-sp-app.service  # restart new service
+            cd /home/moshdev2213/test-sp-be
+            git reset --hard HEAD
+            git clean -fd
+            git pull origin master
+            sudo systemctl restart test-sp-app.service
             echo "🚀 test-sp-app service restarted successfully!"
           EOF
+
