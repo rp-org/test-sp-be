@@ -6,6 +6,10 @@ on:
       context_path:
         required: true
         type: string
+      install_dependencies:
+        required: false
+        type: boolean
+        default: true
     secrets:
       SNYK_TOKEN:
         required: true
@@ -21,7 +25,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Detect and Install Dependencies
+      - name: Optional - Install Dependencies
+        if: ${{ inputs.install_dependencies }}
         run: |
           cd ${{ inputs.context_path }}
 
@@ -35,8 +40,7 @@ jobs:
             echo "Java project detected. Installing dependencies with Maven."
             mvn install
           else
-            echo "Unsupported project type. No dependency installation command found."
-            exit 1
+            echo "No known project type. Skipping dependency installation."
           fi
 
       - name: Set up Snyk
