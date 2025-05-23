@@ -202,4 +202,12 @@ async def predict(
         "overall_accuracy": overall_accuracy,
         "feedback": feedback
     }
+
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "online",
+        "service": "Speech Processing Backend",
+        "message": "The backend is running and ready to process video/audio for speech recognition and lip-reading."
+    }
    
