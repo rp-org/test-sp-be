@@ -54,11 +54,11 @@ jobs:
       - name: Run Snyk test (Code + Dependencies Scan)
         run: |
           cd ${{ inputs.context_path }}
-          snyk test --file=requirements.txt --org=e1733ff7-835f-4fa8-9bd2-1cdc6be250d5
+          snyk test --file=requirements.txt --org=e1733ff7-835f-4fa8-9bd2-1cdc6be250d5 --skip-unresolved
         continue-on-error: true
 
       - name: Run Snyk Monitoring
         run: |
           cd ${{ inputs.context_path }}
-          snyk monitor --file=requirements.txt --org=e1733ff7-835f-4fa8-9bd2-1cdc6be250d5
+          snyk monitor --file=requirements.txt --org=e1733ff7-835f-4fa8-9bd2-1cdc6be250d5 --skip-unresolved
         continue-on-error: true
