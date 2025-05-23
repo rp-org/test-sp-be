@@ -188,7 +188,7 @@ async def predict(
 
     overall_accuracy = sum(accuracies) / len(accuracies)
 
-    feedback = "Excellent performance!" if overall_accuracy > 85 else "Good job! Keep improving!" if overall_accuracy > 70 else "Needs more practice yoo!"
+    feedback = "Excellent performance!" if overall_accuracy > 85 else "Good job! Keep improving!" if overall_accuracy > 70 else "Needs more practice !"
 
     return {
         "expected_text": expected_text,
