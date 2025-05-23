@@ -23,7 +23,7 @@ on:
       install_dependencies:
         required: false
         type: boolean
-        default: true
+        default: false
 
 jobs:
   sonarqube-analysis:
